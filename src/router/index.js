@@ -158,6 +158,21 @@ export const asyncRoutes = [
       }
     ]
   },
+  // 献血地点标注
+  {
+    path: '/bloodAddress',
+    component: Layout,
+    redirect: '/blood-address/index',
+    hidden: false,
+    children: [
+      {
+        path: 'CarefulIndex',
+        component: () => import('@/views/blood-address/index'),
+        name: 'AddressIndex',
+        meta: { title: '献血地点', icon: 'skill', noCache: true, roles: ['admin'] }
+      }
+    ]
+  },
   {
     path: '/error',
     component: Layout,

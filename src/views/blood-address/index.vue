@@ -5,7 +5,7 @@
       <!--地图 Start-->
       <el-row style="padding: 30px">
         <el-alert
-          title="在输入框中输入景区地址并再地图上点击景区位置，如此可定位"
+          title="在输入框中输入地址并再地图上点击位置，如此可定位。单击左键添加地点，单击右键取消地点"
           type="success"
           center
           show-icon
@@ -29,9 +29,12 @@
             <!--定位-->
             <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :show-address-bar="true" :auto-location="true" />
             <!--点-->
-            <bm-marker :position="map.center" :dragging="map.dragging" animation="BMAP_ANIMATION_DROP">
+            <!--<bm-marker :position="map.center" :dragging="map.dragging" animation="BMAP_ANIMATION_BOUNCE" @dblclick="markerClick(map.center)">-->
               <!--提示信息-->
               <!--            <bm-info-window :show="map.show">Hello~</bm-info-window>-->
+            <!--</bm-marker>-->
+            <bm-marker v-for="item in address" :key="item.id" :position="item" :dragging="true" animation="BMAP_ANIMATION_BOUNCE" @rightclick="markerClick(item)">
+<!--              <bm-label content="我爱北京天安门" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>-->
             </bm-marker>
             <!-- 搜索 -->
             <bm-view class="map" />
@@ -52,34 +55,48 @@
 </template>
 
 <script>
-import { BaiduMap, BmLocalSearch, BmView, BmGeolocation, BmDriving, BmMarker } from 'vue-baidu-map'
+import { getAllOfAddress, save } from '@/api/address'
+import { BaiduMap, BmLocalSearch, BmView, BmGeolocation, BmMarker } from 'vue-baidu-map'
 export default {
   name: 'AddressIndex',
-  components: { BaiduMap, BmLocalSearch, BmView, BmGeolocation, BmDriving, BmMarker },
+  components: { BaiduMap, BmLocalSearch, BmView, BmGeolocation, BmMarker },
   data() {
     return {
       keyword: '',
       map: {
-        center: { lng: 112.438161, lat: 34.440984 },
+        center: { lng: 113.596101, lat: 34.752017 },
         zoom: 15,
         show: false,
         dragging: true
-      }
+      },
+      address: []
     }
   },
   mounted() {
+    this.getAllAddress()
   },
   methods: {
+    markerClick(va) {
+      console.log('dsdadas')
+      this.addNewAddress(va.lng, va.lat)
+    },
     handlerBaiDyMap({ BMap, map }) {
       // console.log(BMap, map)
       var _this = this
       map.addEventListener('click', function(e) {
-        // console.log(e)
         console.log(e.point.lng, e.point.lat)
-        _this.scenic_baseinfo.scenic_lng = e.point.lng
-        _this.scenic_baseinfo.scenic_lat = e.point.lat
-        _this.$message.success('已定位<' + _this.scenic_baseinfo.scenic_name + '>景点的经纬度为<' +
-          e.point.lng + ',' + e.point.lat + '>')
+        _this.addNewAddress(e.point.lng, e.point.lat)
+      })
+    },
+    addNewAddress(lng, lat) {
+      save({ lng, lat }).then(res => {
+        this.$message.success(res.msg)
+        this.getAllAddress()
+      })
+    },
+    getAllAddress() {
+      getAllOfAddress().then(res => {
+        this.address = res.data
       })
     }
   }

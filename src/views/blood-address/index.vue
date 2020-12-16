@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     markerClick(va) {
-      console.log('dsdadas')
       this.addNewAddress(va.lng, va.lat)
     },
     handlerBaiDyMap({ BMap, map }) {

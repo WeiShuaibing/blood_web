@@ -32,7 +32,7 @@
           </el-row>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="addVisible = false">取 消</el-button>
+          <el-button @click="addVisible = false">取  消</el-button>
           <el-button v-if="!isEdit" type="primary" @click="saveNewCareful">保存</el-button>
           <el-button v-if="isEdit" type="primary" @click="enshureEdit">更新</el-button>
         </div>

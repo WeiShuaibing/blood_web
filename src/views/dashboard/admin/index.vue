@@ -2,10 +2,20 @@
   <div class="dashboard-editor-container">
 <!--    <github-corner class="github-corner" />-->
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+      <!--<line-chart :chart-data="lineChartData" />-->
+      <h3>最新预约信息：</h3>
+      <el-table :data="appointments" style="width: 100%">
+        <el-table-column prop="userName" label="预约人" width="180"></el-table-column>
+        <el-table-column prop="minzu" label="民族" width="180"></el-table-column>
+        <el-table-column prop="huji" label="户籍"></el-table-column>
+        <el-table-column prop="wenhua" label="文化"></el-table-column>
+        <el-table-column prop="hunyin" label="婚姻"></el-table-column>
+        <el-table-column prop="phone" label="电话"></el-table-column>
+        <el-table-column prop="address" label="联系地址"></el-table-column>
+      </el-table>
     </el-row>
 
   </div>
@@ -13,42 +23,26 @@
 
 <script>
 import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-import PieChart from './components/PieChart'
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import { getAllAppointment } from '@/api/appointment'
 
 export default {
   name: 'DashboardAdmin',
   components: {
-    PanelGroup,
-    LineChart,
-    PieChart
+    PanelGroup
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      appointments: []
     }
   },
+  mounted() {
+    this.allAppointment()
+  },
   methods: {
-    handleSetLineChartData(type) {
-      // this.lineChartData = lineChartData[type]
+    allAppointment() {
+      getAllAppointment('0').then(res => {
+        this.appointments = res.data
+      })
     }
   }
 }

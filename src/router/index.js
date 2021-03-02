@@ -113,6 +113,51 @@ export const asyncRoutes = [
       }
     ]
   },
+  // 预约者页面
+  {
+    path: '/appointment',
+    component: Layout,
+    redirect: '/appointment_user/index',
+    hidden: false,
+    children: [
+      {
+        path: 'AppointmentUserIndex',
+        component: () => import('@/views/appointment_user/index'),
+        name: 'AppointmentUserIndex',
+        meta: { title: '预约者', icon: 'skill', noCache: true, roles: ['jianyan'] }
+      }
+    ]
+  },
+  // 填写检验报表
+  {
+    path: '/testReport',
+    component: Layout,
+    redirect: '/testReport/index',
+    hidden: true,
+    children: [
+      {
+        path: 'TestReportIndex',
+        component: () => import('@/views/test_report/index'),
+        name: 'TestReportIndex',
+        meta: { title: '检验报表', icon: 'skill', noCache: true, roles: ['jianyan'] }
+      }
+    ]
+  },
+  // 血库管理
+  {
+    path: '/xueku',
+    component: Layout,
+    redirect: '/xueku/index',
+    hidden: false,
+    children: [
+      {
+        path: 'XueKuIndex',
+        component: () => import('@/views/xueku/index'),
+        name: 'XueKuIndex',
+        meta: { title: '血库管理', icon: 'skill', noCache: true, roles: ['xueku'] }
+      }
+    ]
+  },
   // 管理员管理页面
   {
     path: '/admin',
@@ -170,6 +215,36 @@ export const asyncRoutes = [
         component: () => import('@/views/blood-address/index'),
         name: 'AddressIndex',
         meta: { title: '献血地点', icon: 'skill', noCache: true, roles: ['admin'] }
+      }
+    ]
+  },
+  // 用户管理
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    hidden: false,
+    children: [
+      {
+        path: 'UserIndex',
+        component: () => import('@/views/user/index'),
+        name: 'UserIndex',
+        meta: { title: '用户管理', icon: 'skill', noCache: true, roles: ['admin'] }
+      }
+    ]
+  },
+  // 用户献血记录
+  {
+    path: '/userBloodRecord',
+    component: Layout,
+    redirect: '/blood_record/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/blood_record/index'),
+        name: 'userBloodRecord',
+        meta: { title: '献血记录', icon: 'skill', noCache: true, roles: ['admin'] }
       }
     ]
   },
